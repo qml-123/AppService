@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="AppService" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="AppService" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+    <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="AppService">
         <serverdata>
           <mappings>
             <mapping deploy="/root/go/src/github.com/qml-123/AppService" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/root/go/src/github.com/qml-123/AppService/output" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

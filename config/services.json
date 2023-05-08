@@ -1,0 +1,6 @@
+{
+  "service_name": "AppService",
+  "listen_port": 9091,
+  "listen_ip": "114.116.15.130",
+  "consul_address": "114.116.15.130:8500"
+}
