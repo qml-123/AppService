@@ -6,12 +6,12 @@ import (
 	"encoding/binary"
 	"os"
 
-	"github.com/qml-123/AppService/cgo/av1"
+	"github.com/qml-123/AppService/cgo/ffmpeg"
 )
 
 func Upload(ctx context.Context, user_id string, file []byte) (string, error) {
 	var err error
-	ori_file, err := av1.AV1Decode(file)
+	ori_file, err := ffmpeg.DecodeAV1(file)
 	if err != nil {
 		return "", err
 	}

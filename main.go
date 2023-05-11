@@ -6,7 +6,7 @@ import (
 	"net"
 
 	"github.com/cloudwego/kitex/server"
-	"github.com/qml-123/AppService/cgo/av1"
+	"github.com/qml-123/AppService/cgo/rav1e"
 	"github.com/qml-123/AppService/cgo/test/file"
 	app "github.com/qml-123/AppService/kitex_gen/app/appservice"
 	"github.com/qml-123/GateWay/common"
@@ -17,7 +17,7 @@ const (
 )
 
 func main() {
-	test()
+	_test()
 	conf, err := common.GetJsonFromFile(configPath)
 	if err != nil {
 		panic(err)
@@ -41,18 +41,18 @@ func main() {
 	}
 }
 
-func test() {
-	input := file.GetFileData("1.txt")
-	got, err := av1.AV1Encode(input)
+func _test() {
+	input := file.GetFileData("/root/go/src/github.com/qml-123/AppService/output/bin/1.txt")
+	got, err := rav1e.Encode(input)
 	if err != nil {
 		log.Panicf("err: %v", err)
 	}
-	file.SaveFileData(got, "en_1.txt")
+	file.SaveFileData(got, "/root/go/src/github.com/qml-123/AppService/output/bin/en_1.txt")
 
-	input = file.GetFileData("en_1.txt")
-	got, err = av1.AV1Decode(input)
+	input = file.GetFileData("/root/go/src/github.com/qml-123/AppService/output/bin/en_1.txt")
+	got, err = rav1e.Decode(input)
 	if err != nil {
 		log.Panicf("err: %v", err)
 	}
-	file.SaveFileData(got, "de_1.txt")
+	file.SaveFileData(got, "/root/go/src/github.com/qml-123/AppService/output/bin/de_1.txt")
 }
