@@ -1,15 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"log"
 	"net"
 
 	"github.com/cloudwego/kitex/server"
-	"github.com/qml-123/AppService/cgo/rav1e"
-	"github.com/qml-123/AppService/cgo/test/file"
+	"github.com/qml-123/AppService/cgo/ffmpeg"
 	app "github.com/qml-123/AppService/kitex_gen/app/appservice"
+	"github.com/qml-123/AppService/pkg/log"
 	"github.com/qml-123/GateWay/common"
+	"github.com/qml-123/app_log/logger"
 )
 
 const (
@@ -17,11 +18,17 @@ const (
 )
 
 func main() {
-	_test()
+	ctx := context.Background()
+	ffmpeg.Test()
 	conf, err := common.GetJsonFromFile(configPath)
 	if err != nil {
 		panic(err)
 	}
+
+	if err = log.InitLogger(conf.EsUrl); err != nil {
+		panic(err)
+	}
+
 	addr, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+fmt.Sprintf("%d", conf.ListenPort))
 	if err != nil {
 		panic(err)
@@ -37,22 +44,6 @@ func main() {
 
 	err = svr.Run()
 	if err != nil {
-		log.Println(err.Error())
+		logger.Warn(ctx, "Failed to run server: %v", err)
 	}
-}
-
-func _test() {
-	input := file.GetFileData("/root/go/src/github.com/qml-123/AppService/output/bin/1.txt")
-	got, err := rav1e.Encode(input)
-	if err != nil {
-		log.Panicf("err: %v", err)
-	}
-	file.SaveFileData(got, "/root/go/src/github.com/qml-123/AppService/output/bin/en_1.txt")
-
-	input = file.GetFileData("/root/go/src/github.com/qml-123/AppService/output/bin/en_1.txt")
-	got, err = rav1e.Decode(input)
-	if err != nil {
-		log.Panicf("err: %v", err)
-	}
-	file.SaveFileData(got, "/root/go/src/github.com/qml-123/AppService/output/bin/de_1.txt")
 }

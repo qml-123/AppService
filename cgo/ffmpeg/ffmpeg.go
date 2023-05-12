@@ -7,15 +7,10 @@ package ffmpeg
 */
 import "C"
 import (
-	"errors"
+	"fmt"
 	"log"
 	"unsafe"
 )
-
-// 初始化ffmpeg
-func init() {
-	C.init_ffmpeg()
-}
 
 // AV1编码函数
 func EncodeAV1(input []byte) ([]byte, error) {
@@ -24,7 +19,7 @@ func EncodeAV1(input []byte) ([]byte, error) {
 
 	ret := C.encode_av1((*C.uint8_t)(&input[0]), C.int(len(input)), &output, &outputSize)
 	if ret != 0 {
-		return nil, errors.New("failed to encode AV1")
+		return nil, fmt.Errorf("failed to encode AV1, ret: %v", ret)
 	}
 
 	// 注意: 你需要释放C分配的内存
@@ -40,7 +35,7 @@ func DecodeAV1(input []byte) ([]byte, error) {
 
 	ret := C.decode_av1((*C.uint8_t)(&input[0]), C.int(len(input)), &output, &outputSize)
 	if ret != 0 {
-		return nil, errors.New("failed to decode AV1")
+		return nil, fmt.Errorf("failed to decode AV1, ret: %v", ret)
 	}
 
 	// 注意: 你需要释放C分配的内存
@@ -49,7 +44,7 @@ func DecodeAV1(input []byte) ([]byte, error) {
 	return C.GoBytes(unsafe.Pointer(output), outputSize), nil
 }
 
-func test() {
+func Test() {
 	// 测试
 	input := []byte("test data")
 
