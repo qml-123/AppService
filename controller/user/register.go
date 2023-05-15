@@ -6,6 +6,7 @@ import (
 
 	"github.com/qml-123/AppService/kitex_gen/app"
 	"github.com/qml-123/AppService/pkg/db"
+	"github.com/qml-123/AppService/pkg/id"
 	"github.com/qml-123/app_log/error_code"
 	"github.com/qml-123/app_log/logger"
 	"gorm.io/gorm"
@@ -22,8 +23,9 @@ func Register(ctx context.Context, req *app.RegisteRequest) error {
 		logger.Error(ctx, "db error, %v", result.Error)
 		return error_code.InternalError
 	}
-
+	userID := id.Generate()
 	user = &db.User{
+		UserID:   int64(userID),
 		UserName: req.GetUserName(),
 		PassWord: req.GetPassword(),
 	}

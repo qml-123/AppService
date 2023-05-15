@@ -6,10 +6,12 @@ import (
 	"net"
 
 	"github.com/cloudwego/kitex/server"
-	"github.com/qml-123/AppService/cgo/ffmpeg"
 	app "github.com/qml-123/AppService/kitex_gen/app/appservice"
+	"github.com/qml-123/AppService/pkg/db"
+	"github.com/qml-123/AppService/pkg/id"
 	"github.com/qml-123/AppService/pkg/log"
-	"github.com/qml-123/GateWay/common"
+	"github.com/qml-123/AppService/pkg/redis"
+	"github.com/qml-123/app_log/common"
 	"github.com/qml-123/app_log/logger"
 )
 
@@ -19,13 +21,25 @@ const (
 
 func main() {
 	ctx := context.Background()
-	ffmpeg.Test()
+	//ffmpeg.Test()
 	conf, err := common.GetJsonFromFile(configPath)
 	if err != nil {
 		panic(err)
 	}
 
 	if err = log.InitLogger(conf.EsUrl); err != nil {
+		panic(err)
+	}
+
+	if err = db.InitDB(); err != nil {
+		panic(err)
+	}
+
+	if err = redis.InitRedis(); err != nil {
+		panic(err)
+	}
+
+	if err = id.InitGen(); err != nil {
 		panic(err)
 	}
 

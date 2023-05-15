@@ -5,13 +5,11 @@ import (
 	"context"
 	"encoding/binary"
 	"os"
-
-	"github.com/qml-123/AppService/cgo/ffmpeg"
 )
 
 func Upload(ctx context.Context, user_id string, file []byte) (string, error) {
 	var err error
-	ori_file, err := ffmpeg.DecodeAV1(file)
+	//ori_file, err := ffmpeg.DecodeAV1(file)
 	if err != nil {
 		return "", err
 	}
@@ -22,7 +20,7 @@ func Upload(ctx context.Context, user_id string, file []byte) (string, error) {
 	defer fp.Close()
 
 	buf := new(bytes.Buffer)
-	binary.Write(buf, binary.LittleEndian, ori_file)
+	binary.Write(buf, binary.LittleEndian, file)
 	fp.Write(buf.Bytes())
 	return "new_file", nil
 }
