@@ -1433,9 +1433,11 @@ func (p *GetFileResponse) Field255DeepEqual(src *base.BaseData) bool {
 }
 
 type RegisteRequest struct {
-	UserId   string         `thrift:"user_id,1,required" frugal:"1,required,string" json:"user_id"`
-	Password string         `thrift:"password,2,required" frugal:"2,required,string" json:"password"`
-	BaseData *base.BaseData `thrift:"baseData,255" frugal:"255,default,base.BaseData" json:"baseData"`
+	UserName    string         `thrift:"user_name,1,required" frugal:"1,required,string" json:"user_name"`
+	Password    string         `thrift:"password,2,required" frugal:"2,required,string" json:"password"`
+	Email       *string        `thrift:"email,3,optional" frugal:"3,optional,string" json:"email,omitempty"`
+	PhoneNumber *string        `thrift:"phone_number,4,optional" frugal:"4,optional,string" json:"phone_number,omitempty"`
+	BaseData    *base.BaseData `thrift:"baseData,255" frugal:"255,default,base.BaseData" json:"baseData"`
 }
 
 func NewRegisteRequest() *RegisteRequest {
@@ -1446,12 +1448,30 @@ func (p *RegisteRequest) InitDefault() {
 	*p = RegisteRequest{}
 }
 
-func (p *RegisteRequest) GetUserId() (v string) {
-	return p.UserId
+func (p *RegisteRequest) GetUserName() (v string) {
+	return p.UserName
 }
 
 func (p *RegisteRequest) GetPassword() (v string) {
 	return p.Password
+}
+
+var RegisteRequest_Email_DEFAULT string
+
+func (p *RegisteRequest) GetEmail() (v string) {
+	if !p.IsSetEmail() {
+		return RegisteRequest_Email_DEFAULT
+	}
+	return *p.Email
+}
+
+var RegisteRequest_PhoneNumber_DEFAULT string
+
+func (p *RegisteRequest) GetPhoneNumber() (v string) {
+	if !p.IsSetPhoneNumber() {
+		return RegisteRequest_PhoneNumber_DEFAULT
+	}
+	return *p.PhoneNumber
 }
 
 var RegisteRequest_BaseData_DEFAULT *base.BaseData
@@ -1462,20 +1482,36 @@ func (p *RegisteRequest) GetBaseData() (v *base.BaseData) {
 	}
 	return p.BaseData
 }
-func (p *RegisteRequest) SetUserId(val string) {
-	p.UserId = val
+func (p *RegisteRequest) SetUserName(val string) {
+	p.UserName = val
 }
 func (p *RegisteRequest) SetPassword(val string) {
 	p.Password = val
+}
+func (p *RegisteRequest) SetEmail(val *string) {
+	p.Email = val
+}
+func (p *RegisteRequest) SetPhoneNumber(val *string) {
+	p.PhoneNumber = val
 }
 func (p *RegisteRequest) SetBaseData(val *base.BaseData) {
 	p.BaseData = val
 }
 
 var fieldIDToName_RegisteRequest = map[int16]string{
-	1:   "user_id",
+	1:   "user_name",
 	2:   "password",
+	3:   "email",
+	4:   "phone_number",
 	255: "baseData",
+}
+
+func (p *RegisteRequest) IsSetEmail() bool {
+	return p.Email != nil
+}
+
+func (p *RegisteRequest) IsSetPhoneNumber() bool {
+	return p.PhoneNumber != nil
 }
 
 func (p *RegisteRequest) IsSetBaseData() bool {
@@ -1486,7 +1522,7 @@ func (p *RegisteRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserId bool = false
+	var issetUserName bool = false
 	var issetPassword bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -1508,7 +1544,7 @@ func (p *RegisteRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetUserId = true
+				issetUserName = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -1520,6 +1556,26 @@ func (p *RegisteRequest) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetPassword = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -1549,7 +1605,7 @@ func (p *RegisteRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetUserId {
+	if !issetUserName {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1580,7 +1636,7 @@ func (p *RegisteRequest) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.UserId = v
+		p.UserName = v
 	}
 	return nil
 }
@@ -1590,6 +1646,24 @@ func (p *RegisteRequest) ReadField2(iprot thrift.TProtocol) error {
 		return err
 	} else {
 		p.Password = v
+	}
+	return nil
+}
+
+func (p *RegisteRequest) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Email = &v
+	}
+	return nil
+}
+
+func (p *RegisteRequest) ReadField4(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.PhoneNumber = &v
 	}
 	return nil
 }
@@ -1616,6 +1690,14 @@ func (p *RegisteRequest) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 2
 			goto WriteFieldError
 		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
 		if err = p.writeField255(oprot); err != nil {
 			fieldId = 255
 			goto WriteFieldError
@@ -1640,10 +1722,10 @@ WriteStructEndError:
 }
 
 func (p *RegisteRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("user_id", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("user_name", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.UserId); err != nil {
+	if err := oprot.WriteString(p.UserName); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1671,6 +1753,44 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *RegisteRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetEmail() {
+		if err = oprot.WriteFieldBegin("email", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Email); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *RegisteRequest) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPhoneNumber() {
+		if err = oprot.WriteFieldBegin("phone_number", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.PhoneNumber); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *RegisteRequest) writeField255(oprot thrift.TProtocol) (err error) {
@@ -1703,10 +1823,16 @@ func (p *RegisteRequest) DeepEqual(ano *RegisteRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.UserId) {
+	if !p.Field1DeepEqual(ano.UserName) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.Password) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.PhoneNumber) {
 		return false
 	}
 	if !p.Field255DeepEqual(ano.BaseData) {
@@ -1717,7 +1843,7 @@ func (p *RegisteRequest) DeepEqual(ano *RegisteRequest) bool {
 
 func (p *RegisteRequest) Field1DeepEqual(src string) bool {
 
-	if strings.Compare(p.UserId, src) != 0 {
+	if strings.Compare(p.UserName, src) != 0 {
 		return false
 	}
 	return true
@@ -1725,6 +1851,30 @@ func (p *RegisteRequest) Field1DeepEqual(src string) bool {
 func (p *RegisteRequest) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Password, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RegisteRequest) Field3DeepEqual(src *string) bool {
+
+	if p.Email == src {
+		return true
+	} else if p.Email == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Email, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *RegisteRequest) Field4DeepEqual(src *string) bool {
+
+	if p.PhoneNumber == src {
+		return true
+	} else if p.PhoneNumber == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.PhoneNumber, *src) != 0 {
 		return false
 	}
 	return true
@@ -1910,7 +2060,7 @@ func (p *RegisteResponse) Field255DeepEqual(src *base.BaseData) bool {
 }
 
 type LoginRequest struct {
-	UserId   *string        `thrift:"user_id,1,optional" frugal:"1,optional,string" json:"user_id,omitempty"`
+	UserName *string        `thrift:"user_name,1,optional" frugal:"1,optional,string" json:"user_name,omitempty"`
 	Password *string        `thrift:"password,2,optional" frugal:"2,optional,string" json:"password,omitempty"`
 	Token    *string        `thrift:"token,3,optional" frugal:"3,optional,string" json:"token,omitempty"`
 	BaseData *base.BaseData `thrift:"baseData,255" frugal:"255,default,base.BaseData" json:"baseData"`
@@ -1924,13 +2074,13 @@ func (p *LoginRequest) InitDefault() {
 	*p = LoginRequest{}
 }
 
-var LoginRequest_UserId_DEFAULT string
+var LoginRequest_UserName_DEFAULT string
 
-func (p *LoginRequest) GetUserId() (v string) {
-	if !p.IsSetUserId() {
-		return LoginRequest_UserId_DEFAULT
+func (p *LoginRequest) GetUserName() (v string) {
+	if !p.IsSetUserName() {
+		return LoginRequest_UserName_DEFAULT
 	}
-	return *p.UserId
+	return *p.UserName
 }
 
 var LoginRequest_Password_DEFAULT string
@@ -1959,8 +2109,8 @@ func (p *LoginRequest) GetBaseData() (v *base.BaseData) {
 	}
 	return p.BaseData
 }
-func (p *LoginRequest) SetUserId(val *string) {
-	p.UserId = val
+func (p *LoginRequest) SetUserName(val *string) {
+	p.UserName = val
 }
 func (p *LoginRequest) SetPassword(val *string) {
 	p.Password = val
@@ -1973,14 +2123,14 @@ func (p *LoginRequest) SetBaseData(val *base.BaseData) {
 }
 
 var fieldIDToName_LoginRequest = map[int16]string{
-	1:   "user_id",
+	1:   "user_name",
 	2:   "password",
 	3:   "token",
 	255: "baseData",
 }
 
-func (p *LoginRequest) IsSetUserId() bool {
-	return p.UserId != nil
+func (p *LoginRequest) IsSetUserName() bool {
+	return p.UserName != nil
 }
 
 func (p *LoginRequest) IsSetPassword() bool {
@@ -2088,7 +2238,7 @@ func (p *LoginRequest) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.UserId = &v
+		p.UserName = &v
 	}
 	return nil
 }
@@ -2161,11 +2311,11 @@ WriteStructEndError:
 }
 
 func (p *LoginRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetUserId() {
-		if err = oprot.WriteFieldBegin("user_id", thrift.STRING, 1); err != nil {
+	if p.IsSetUserName() {
+		if err = oprot.WriteFieldBegin("user_name", thrift.STRING, 1); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.UserId); err != nil {
+		if err := oprot.WriteString(*p.UserName); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2247,7 +2397,7 @@ func (p *LoginRequest) DeepEqual(ano *LoginRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.UserId) {
+	if !p.Field1DeepEqual(ano.UserName) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.Password) {
@@ -2264,12 +2414,12 @@ func (p *LoginRequest) DeepEqual(ano *LoginRequest) bool {
 
 func (p *LoginRequest) Field1DeepEqual(src *string) bool {
 
-	if p.UserId == src {
+	if p.UserName == src {
 		return true
-	} else if p.UserId == nil || src == nil {
+	} else if p.UserName == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.UserId, *src) != 0 {
+	if strings.Compare(*p.UserName, *src) != 0 {
 		return false
 	}
 	return true

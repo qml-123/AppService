@@ -6,6 +6,7 @@ import (
 
 	"github.com/qml-123/AppService/cgo/test"
 	"github.com/qml-123/AppService/controller/file"
+	"github.com/qml-123/AppService/controller/user"
 	app "github.com/qml-123/AppService/kitex_gen/app"
 )
 
@@ -49,5 +50,9 @@ func (s *AppServiceImpl) Login(ctx context.Context, req *app.LoginRequest) (resp
 // Register implements the AppServiceImpl interface.
 func (s *AppServiceImpl) Register(ctx context.Context, req *app.RegisteRequest) (resp *app.RegisteResponse, err error) {
 	// TODO: Your code here...
-	return
+	err = user.Register(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return &app.RegisteResponse{}, nil
 }

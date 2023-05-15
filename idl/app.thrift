@@ -36,8 +36,10 @@ struct GetFileResponse {
 }
 
 struct RegisteRequest {
-    1: required string user_id
+    1: required string user_name
     2: required string password
+    3: optional string email
+    4: optional string phone_number
 
     255: base.BaseData baseData
 }
@@ -47,7 +49,7 @@ struct RegisteResponse {
 }
 
 struct LoginRequest {
-    1: optional string user_id
+    1: optional string user_name
     2: optional string password
     3: optional string token
 
