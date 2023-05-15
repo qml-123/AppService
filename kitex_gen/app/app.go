@@ -2458,6 +2458,7 @@ func (p *LoginRequest) Field255DeepEqual(src *base.BaseData) bool {
 
 type LoginResponse struct {
 	Token    string         `thrift:"token,1,required" frugal:"1,required,string" json:"token"`
+	UserId   int64          `thrift:"user_id,2,required" frugal:"2,required,i64" json:"user_id"`
 	BaseData *base.BaseData `thrift:"baseData,255" frugal:"255,default,base.BaseData" json:"baseData"`
 }
 
@@ -2473,6 +2474,10 @@ func (p *LoginResponse) GetToken() (v string) {
 	return p.Token
 }
 
+func (p *LoginResponse) GetUserId() (v int64) {
+	return p.UserId
+}
+
 var LoginResponse_BaseData_DEFAULT *base.BaseData
 
 func (p *LoginResponse) GetBaseData() (v *base.BaseData) {
@@ -2484,12 +2489,16 @@ func (p *LoginResponse) GetBaseData() (v *base.BaseData) {
 func (p *LoginResponse) SetToken(val string) {
 	p.Token = val
 }
+func (p *LoginResponse) SetUserId(val int64) {
+	p.UserId = val
+}
 func (p *LoginResponse) SetBaseData(val *base.BaseData) {
 	p.BaseData = val
 }
 
 var fieldIDToName_LoginResponse = map[int16]string{
 	1:   "token",
+	2:   "user_id",
 	255: "baseData",
 }
 
@@ -2502,6 +2511,7 @@ func (p *LoginResponse) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetToken bool = false
+	var issetUserId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2523,6 +2533,17 @@ func (p *LoginResponse) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetToken = true
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetUserId = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -2556,6 +2577,11 @@ func (p *LoginResponse) Read(iprot thrift.TProtocol) (err error) {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
+
+	if !issetUserId {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -2583,6 +2609,15 @@ func (p *LoginResponse) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *LoginResponse) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = v
+	}
+	return nil
+}
+
 func (p *LoginResponse) ReadField255(iprot thrift.TProtocol) error {
 	p.BaseData = base.NewBaseData()
 	if err := p.BaseData.Read(iprot); err != nil {
@@ -2599,6 +2634,10 @@ func (p *LoginResponse) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 		if err = p.writeField255(oprot); err != nil {
@@ -2641,6 +2680,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
+func (p *LoginResponse) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
 func (p *LoginResponse) writeField255(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("baseData", thrift.STRUCT, 255); err != nil {
 		goto WriteFieldBeginError
@@ -2674,6 +2730,9 @@ func (p *LoginResponse) DeepEqual(ano *LoginResponse) bool {
 	if !p.Field1DeepEqual(ano.Token) {
 		return false
 	}
+	if !p.Field2DeepEqual(ano.UserId) {
+		return false
+	}
 	if !p.Field255DeepEqual(ano.BaseData) {
 		return false
 	}
@@ -2683,6 +2742,13 @@ func (p *LoginResponse) DeepEqual(ano *LoginResponse) bool {
 func (p *LoginResponse) Field1DeepEqual(src string) bool {
 
 	if strings.Compare(p.Token, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *LoginResponse) Field2DeepEqual(src int64) bool {
+
+	if p.UserId != src {
 		return false
 	}
 	return true

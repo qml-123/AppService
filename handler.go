@@ -8,6 +8,7 @@ import (
 	"github.com/qml-123/AppService/controller/file"
 	"github.com/qml-123/AppService/controller/user"
 	app "github.com/qml-123/AppService/kitex_gen/app"
+	"github.com/qml-123/app_log/error_code"
 )
 
 // AppServiceImpl implements the last service interface defined in the IDL.
@@ -44,7 +45,16 @@ func (s *AppServiceImpl) Upload(ctx context.Context, req *app.UploadFileRequest)
 // Login implements the AppServiceImpl interface.
 func (s *AppServiceImpl) Login(ctx context.Context, req *app.LoginRequest) (resp *app.LoginResponse, err error) {
 	// TODO: Your code here...
-	return
+	if req.UserName == nil || req.Password == nil {
+		return nil, error_code.InvalidParam
+	}
+	userID, err := user.Login(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return &app.LoginResponse{
+		UserId: userID,
+	}, nil
 }
 
 // Register implements the AppServiceImpl interface.

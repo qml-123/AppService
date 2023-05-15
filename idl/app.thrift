@@ -58,7 +58,8 @@ struct LoginRequest {
 
 struct LoginResponse {
     1: required string token
-    
+    2: required i64 user_id
+
     255: base.BaseData baseData
 }
 
