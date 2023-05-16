@@ -1,0 +1,3 @@
+{"file_line":"/root/go/src/github.com/qml-123/AppService/controller/user/register.go:34","level":"error","log_id":"","msg":"db Create error, err: Error 1054 (42S22): Unknown column 'delete' in 'field list'","time":"2023-05-17T00:00:00+08:00"}
+{"file_line":"/root/go/src/github.com/qml-123/AppService/controller/user/login.go:22","level":"warning","log_id":"","msg":"db error, invalid value, should be pointer to struct or slice","time":"2023-05-17T00:05:03+08:00"}
+be pointer to struct or slice","msg":"db error, invalid value, should be pointer to struct or slice","time":"2023-05-16T23:51:58+08:00"}

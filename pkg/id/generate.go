@@ -45,3 +45,7 @@ func InitGen() error {
 func Generate() snowflake.ID {
 	return _node.Generate()
 }
+
+func GenerateFileKey() string {
+	return "file_" + _node.Generate().Base58()
+}

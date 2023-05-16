@@ -9,7 +9,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cloudwego/kitex v0.5.2
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/qml-123/app_log v1.0.3
+	github.com/qml-123/app_log v1.1.2
 	gorm.io/driver/mysql v1.5.0
 	gorm.io/gorm v1.25.1
 )

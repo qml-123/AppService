@@ -4,15 +4,15 @@ import (
 	"context"
 	"errors"
 
-	"github.com/qml-123/AppService/kitex_gen/app"
 	"github.com/qml-123/AppService/pkg/db"
 	"github.com/qml-123/app_log/error_code"
+	"github.com/qml-123/app_log/kitex_gen/app"
 	"github.com/qml-123/app_log/logger"
 	"gorm.io/gorm"
 )
 
 func Login(ctx context.Context, req *app.LoginRequest) (int64, error) {
-	var user *db.User
+	user := &db.User{}
 	result := db.GetDB().First(user, "user_name = ?", req.GetUserName())
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

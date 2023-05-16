@@ -6,12 +6,13 @@ import (
 	"net"
 
 	"github.com/cloudwego/kitex/server"
-	app "github.com/qml-123/AppService/kitex_gen/app/appservice"
+	"github.com/qml-123/AppService/middleware"
 	"github.com/qml-123/AppService/pkg/db"
 	"github.com/qml-123/AppService/pkg/id"
 	"github.com/qml-123/AppService/pkg/log"
 	"github.com/qml-123/AppService/pkg/redis"
 	"github.com/qml-123/app_log/common"
+	"github.com/qml-123/app_log/kitex_gen/app/appservice"
 	"github.com/qml-123/app_log/logger"
 )
 
@@ -47,7 +48,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	svr := app.NewServer(new(AppServiceImpl), server.WithServiceAddr(addr))
+	svr := appservice.NewServer(new(AppServiceImpl), server.WithServiceAddr(addr), server.WithMiddleware(middleware.ErrResponseMW))
 
 	addr, _ = net.ResolveTCPAddr("tcp", conf.ListenIp+":"+fmt.Sprintf("%d", conf.ListenPort))
 	if err = common.InitConsul(addr, conf); err != nil {

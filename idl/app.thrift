@@ -10,6 +10,18 @@ struct PingResponse {
   255: base.BaseData baseData
 }
 
+struct GetFileKeyRequest {
+    1: required i64 user_id
+
+    255: base.BaseData baseData
+}
+
+struct GetFileKeyResponse {
+    1: required string file_key
+
+    255: base.BaseData baseData
+}
+
 struct UploadFileRequest {
     1: required string user_id
     2: required binary file
@@ -68,6 +80,7 @@ service AppService {
 
   GetFileResponse GetFile(1: GetFileRequest req)
   UploadFileResponse Upload(1: UploadFileRequest req)
+  GetFileKeyResponse GetFileKey(1: GetFileKeyRequest req)
 
   RegisteResponse Register(1: RegisteRequest req)
   LoginResponse Login(1: LoginRequest req)

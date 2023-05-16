@@ -30,6 +30,7 @@ type FileShare struct {
 	gorm.Model
 	FileKey string `gorm:"column:file_key;size:100;not null"`
 	UserID  int64  `gorm:"column:user_id;not null"`
+	Permission int `gorm:"column:permission;not null"`
 }
 
 func InitDB() error {
@@ -52,10 +53,11 @@ CREATE TABLE `users` (
   `created_at` datetime(3) NOT NULL,
   `updated_at` datetime(3) NOT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
+  `delete` bool DEFAULT false,
   `user_name` varchar(100) NOT NULL,
   `pass_word` varchar(100) NOT NULL,
-  `email` varchar(20) NOT NULL,
-  `phone_number` varchar(20) NOT NULL,
+  `email` varchar(20),
+  `phone_number` varchar(20),
   `user_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`user_name`),
@@ -83,6 +85,7 @@ CREATE TABLE `file_shares` (
   `deleted_at` datetime(3) DEFAULT NULL,
   `user_id` bigint unsigned NOT NULL,
   `file_key` varchar(100) NOT NULL,
+  `permission` int NOT NULL commit "1 owner, 2 edit, 4 read",
   PRIMARY KEY (`id`),
   KEY `idx_file_shares_user_id` (`user_id`, `file_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
