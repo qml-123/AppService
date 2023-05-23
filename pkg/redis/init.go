@@ -38,3 +38,35 @@ func Get(key string) (string, error) {
 func Incr(key string) (int64, error) {
 	return _client.Incr(key).Result()
 }
+
+func HSetTask(key string, value interface{}) (bool, error) {
+	return _client.HSet(key, "args", value).Result()
+}
+
+func ZAddTask(score float64, member string) (int64, error) {
+	return _client.ZAdd("task", redis.Z{Score: score, Member: member}).Result()
+}
+
+func HGetTask(key string) (string, error) {
+	return _client.HGet(key, "args").Result()
+}
+
+func HDelTask(key string) (int64, error) {
+	return _client.HDel(key, "args").Result()
+}
+
+func ZPopMinTask() ([]redis.Z, error) {
+	return _client.ZPopMin("task", 1).Result()
+}
+
+func SAdd(key string, value ...string) (int64, error) {
+	return _client.SAdd(key, value).Result()
+}
+
+func SMember(key string) ([]string, error) {
+	return _client.SMembers(key).Result()
+}
+
+func SRem(key string, value ...string) (int64, error) {
+	return _client.SRem(key, value).Result()
+}

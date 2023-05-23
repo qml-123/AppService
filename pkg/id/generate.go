@@ -1,6 +1,7 @@
 package id
 
 import (
+	"context"
 	"time"
 
 	"github.com/bwmarrin/snowflake"
@@ -48,4 +49,15 @@ func Generate() snowflake.ID {
 
 func GenerateFileKey() string {
 	return "file_" + _node.Generate().Base58()
+}
+
+func ContextWithLogID(ctx context.Context) context.Context {
+	if v := ctx.Value("log_id"); v != "" {
+		return ctx
+	}
+	return context.WithValue(ctx, "log_id", _node.Generate().Base58())
+}
+
+func NewContext() context.Context {
+	return ContextWithLogID(context.Background())
 }

@@ -1,12 +1,14 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/cloudwego/kitex/server"
 	"github.com/qml-123/AppService/middleware"
+	"github.com/qml-123/AppService/pkg/consumer/binlog"
+	"github.com/qml-123/AppService/pkg/consumer/delay_task"
 	"github.com/qml-123/AppService/pkg/db"
 	"github.com/qml-123/AppService/pkg/id"
 	"github.com/qml-123/AppService/pkg/log"
@@ -21,7 +23,7 @@ const (
 )
 
 func main() {
-	ctx := context.Background()
+	ctx := id.NewContext()
 	//ffmpeg.Test()
 	conf, err := common.GetJsonFromFile(configPath)
 	if err != nil {
@@ -36,6 +38,10 @@ func main() {
 		panic(err)
 	}
 
+	if err = binlog.InitBinlog(); err != nil {
+		panic(err)
+	}
+
 	if err = redis.InitRedis(); err != nil {
 		panic(err)
 	}
@@ -44,11 +50,15 @@ func main() {
 		panic(err)
 	}
 
+	if err = delay_task.Init(); err != nil {
+		panic(err)
+	}
+
 	addr, err := net.ResolveTCPAddr("tcp", "0.0.0.0:"+fmt.Sprintf("%d", conf.ListenPort))
 	if err != nil {
 		panic(err)
 	}
-	svr := appservice.NewServer(new(AppServiceImpl), server.WithServiceAddr(addr), server.WithMiddleware(middleware.ErrResponseMW))
+	svr := appservice.NewServer(new(AppServiceImpl), server.WithServiceAddr(addr), server.WithMiddleware(middleware.ErrResponseMW), server.WithReadWriteTimeout(5 * time.Minute))
 
 	addr, _ = net.ResolveTCPAddr("tcp", conf.ListenIp+":"+fmt.Sprintf("%d", conf.ListenPort))
 	if err = common.InitConsul(addr, conf); err != nil {

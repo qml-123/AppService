@@ -3,5 +3,19 @@
   "listen_port": 9091,
   "listen_ip": "114.116.15.130",
   "consul_address": "114.116.15.130:8500",
-  "es_url": ["http://114.116.15.130:9200"]
+  "es_url": ["https://es-ca7nr12x.public.tencentelasticsearch.com:9200"],
+  "kafka_address": ["172.21.16.16:9092"],
+  "kafka_consumer": [
+    {
+      "consumer_name": "test",
+      "topic": "test"
+    },
+    {
+      "consumer_name": "compress",
+      "topic": "compress_defer"
+    }
+  ],
+  "kafka_producer_topic": [
+    "test", "compress_defer"
+  ]
 }

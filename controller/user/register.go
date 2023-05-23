@@ -14,7 +14,7 @@ import (
 
 func Register(ctx context.Context, req *app.RegisteRequest) error {
 	user := &db.User{}
-	result := db.GetDB().First(user, "user_name = ?", req.GetUserName())
+	result := db.GetDB().Select("id").First(user, "user_name = ? and `delete` = ?", req.GetUserName(), false)
 	if result.Error == nil {
 		logger.Warn(ctx, "the user_name is registered")
 		return error_code.RegisterNameDuplicate
@@ -28,9 +28,10 @@ func Register(ctx context.Context, req *app.RegisteRequest) error {
 		return error_code.InternalError
 	}
 	user = &db.User{
-		UserID:   int64(userID),
+		UserID:   userID,
 		UserName: req.GetUserName(),
 		PassWord: req.GetPassword(),
+		Delete: false,
 	}
 	result = db.GetDB().Create(user)
 	if result.Error != nil {
@@ -44,7 +45,7 @@ func getUserID(ctx context.Context) (userID int64, err error) {
 	userID = id.Generate().Int64()
 	for {
 		user := &db.User{}
-		result := db.GetDB().First(user, "user_id = ?", userID)
+		result := db.GetDB().Select("id").First(user, "user_id = ?", userID)
 		if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return
 		}

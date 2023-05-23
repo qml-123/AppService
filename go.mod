@@ -8,13 +8,18 @@ require (
 	github.com/apache/thrift v0.18.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/cloudwego/kitex v0.5.2
+	github.com/confluentinc/confluent-kafka-go v1.9.2
+	github.com/go-mysql-org/go-mysql v1.7.0
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/qml-123/app_log v1.1.2
+	github.com/go-resty/resty/v2 v2.7.0
+	github.com/qml-123/app_log v1.1.19
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	gorm.io/driver/mysql v1.5.0
 	gorm.io/gorm v1.25.1
 )
 
 require (
+	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/bufbuild/protocompile v0.5.1 // indirect
 	github.com/bytedance/gopkg v0.0.0-20230512060433-7f5f1dee0b1e // indirect
@@ -29,6 +34,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/pprof v0.0.0-20230510103437-eeec1cb781c3 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/consul/api v1.20.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.5.0 // indirect
@@ -53,18 +59,30 @@ require (
 	github.com/olivere/elastic/v7 v7.0.32 // indirect
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.27.6 // indirect
+	github.com/pingcap/errors v0.11.5-0.20210425183316-da1aaba5fb63 // indirect
+	github.com/pingcap/log v0.0.0-20210625125904-98ed8e2eb1c7 // indirect
+	github.com/pingcap/tidb/parser v0.0.0-20221126021158-6b02a5d8ba7d // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24 // indirect
+	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726 // indirect
+	github.com/siddontang/go-log v0.0.0-20180807004314-8d05993dda07 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.18.1 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
+	google.golang.org/appengine v1.4.0 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

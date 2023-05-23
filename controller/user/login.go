@@ -13,7 +13,7 @@ import (
 
 func Login(ctx context.Context, req *app.LoginRequest) (int64, error) {
 	user := &db.User{}
-	result := db.GetDB().First(user, "user_name = ?", req.GetUserName())
+	result := db.GetDB().Select("user_id").First(user, "user_name = ? and `delete` = ?", req.GetUserName(), false)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			logger.Info(ctx, "user is not exist, user_id: %v", req.GetUserName())

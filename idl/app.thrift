@@ -23,26 +23,49 @@ struct GetFileKeyResponse {
 }
 
 struct UploadFileRequest {
-    1: required string user_id
+    1: required i64 user_id
     2: required binary file
+    3: required i32 chunk_num
+    4: required i32 chunk_size
+    5: required bool has_more
+    6: required string file_key
+    7: required string file_type
+
     255: base.BaseData baseData
 }
 
 struct UploadFileResponse {
-    1: required string file_key
+    255: base.BaseData baseData
+}
+
+struct GetFileChunkNumRequest {
+    1: required i64 user_id
+    2: required string file_key
+
+    255: base.BaseData baseData
+}
+
+struct GetFileChunkNumResponse {
+    1: required i32 chunk_num
 
     255: base.BaseData baseData
 }
 
 struct GetFileRequest {
-    1: required string user_id
+    1: required i64 user_id
     2: required string file_key
+    3: required i32 chunk_num
+    4: optional i32 chunk_size
 
     255: base.BaseData baseData
 }
 
 struct GetFileResponse {
     1: required binary file
+    2: required string file_type
+    3: required bool has_more
+    4: required i32 chunk_size
+    5: required i32 total_num
 
     255: base.BaseData baseData
 }
@@ -81,6 +104,7 @@ service AppService {
   GetFileResponse GetFile(1: GetFileRequest req)
   UploadFileResponse Upload(1: UploadFileRequest req)
   GetFileKeyResponse GetFileKey(1: GetFileKeyRequest req)
+  GetFileChunkNumResponse GetFileChunkSize(1: GetFileChunkNumRequest req)
 
   RegisteResponse Register(1: RegisteRequest req)
   LoginResponse Login(1: LoginRequest req)
